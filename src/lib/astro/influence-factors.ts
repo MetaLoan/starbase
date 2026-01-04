@@ -207,11 +207,17 @@ export function calculateDignityFactor(
 ): AppliedFactor[] {
   const factors: AppliedFactor[] = [];
   
+  // 只计算内行星和发光体的尊贵度，避免累积过多
+  const majorPlanets = ['sun', 'moon', 'mercury', 'venus', 'mars'];
+  
   for (const planet of chart.planets) {
+    if (!majorPlanets.includes(planet.id)) continue;
+    
     const dignityScore = DIGNITY_TABLE[planet.id]?.[planet.sign] || 0;
     
     if (dignityScore !== 0) {
-      const adjustment = (dignityScore / 5) * 10 * weight; // 最大±10分
+      // 降低调整值，从 10 降到 3
+      const adjustment = (dignityScore / 5) * 3 * weight; // 最大±3分
       const planetInfo = PLANETS.find(p => p.id === planet.id);
       
       factors.push({
@@ -243,10 +249,12 @@ export function calculateAspectPhaseFactor(
 ): AppliedFactor[] {
   const factors: AppliedFactor[] = [];
   
-  for (const aspect of aspects.slice(0, 5)) {
+  // 只取前3个最强相位，避免累积过多
+  for (const aspect of aspects.slice(0, 3)) {
     // 入相位比出相位影响更强
-    const phaseMultiplier = aspect.applying ? 1.2 : 0.7;
-    const adjustment = aspect.weight * phaseMultiplier * 5 * weight;
+    const phaseMultiplier = aspect.applying ? 1.1 : 0.8;
+    // 降低基础调整值，从 5 降到 0.8
+    const adjustment = aspect.weight * phaseMultiplier * 0.8 * weight;
     
     const p1 = PLANETS.find(p => p.id === aspect.planet1);
     const p2 = PLANETS.find(p => p.id === aspect.planet2);
@@ -255,7 +263,7 @@ export function calculateAspectPhaseFactor(
       id: `aspect_phase_${aspect.planet1}_${aspect.planet2}`,
       name: `${p1?.name}${aspect.aspectType}${p2?.name}`,
       type: 'aspectPhase',
-      adjustment: aspect.applying ? adjustment : -adjustment * 0.3,
+      adjustment: aspect.applying ? adjustment : -adjustment * 0.5,
       dimension: 'overall',
       reason: aspect.applying 
         ? `入相位，影响正在增强` 
@@ -275,10 +283,12 @@ export function calculateOrbDecayFactor(
 ): AppliedFactor[] {
   const factors: AppliedFactor[] = [];
   
-  for (const aspect of aspects.slice(0, 5)) {
+  // 只取前2个最精确的相位
+  for (const aspect of aspects.slice(0, 2)) {
     // 精确度衰减：orb 越小，影响越大
     const orbDecay = Math.pow(aspect.strength, 1.5); // 非线性衰减
-    const baseAdjustment = aspect.weight * 3;
+    // 降低基础调整值，从 3 降到 0.5
+    const baseAdjustment = aspect.weight * 0.5;
     const adjustment = baseAdjustment * orbDecay * weight;
     
     if (aspect.orb < 1) {
@@ -286,7 +296,7 @@ export function calculateOrbDecayFactor(
         id: `orb_exact_${aspect.planet1}_${aspect.planet2}`,
         name: `精确相位`,
         type: 'aspectOrb',
-        adjustment: adjustment * 1.5,
+        adjustment: adjustment,
         dimension: 'overall',
         reason: `相位容许度仅 ${aspect.orb.toFixed(1)}°，影响极强`,
       });
