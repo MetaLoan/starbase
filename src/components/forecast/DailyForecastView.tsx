@@ -124,10 +124,12 @@ export function DailyForecastView({ forecast, onHourSelect }: DailyForecastViewP
                   <span className="text-2xl">{moonSignInfo?.symbol}</span>
                   <span className="text-default-300">{forecast.moonSignName}</span>
                 </div>
-                <div className="text-xs text-default-400">
-                  {forecast.moonPhase.phase} · {Math.round(forecast.moonPhase.illumination)}%
-                </div>
-                {forecast.moonPhase.isVoidOfCourse && (
+                {forecast.moonPhase && (
+                  <div className="text-xs text-default-400">
+                    {forecast.moonPhase.phase} · {Math.round(forecast.moonPhase.illumination || 0)}%
+                  </div>
+                )}
+                {forecast.moonPhase?.isVoidOfCourse && (
                   <Chip size="sm" color="warning" variant="flat" className="mt-1">
                     月亮空亡
                   </Chip>
@@ -315,7 +317,7 @@ export function DailyForecastView({ forecast, onHourSelect }: DailyForecastViewP
       )}
 
       {/* 活跃行运 */}
-      {forecast.activeAspects.length > 0 && (
+      {forecast.activeAspects && forecast.activeAspects.length > 0 && (
         <Card className="glass-card">
           <CardHeader className="pb-2">
             <h3 className="text-lg font-display text-cosmic-nova">今日活跃行运</h3>
