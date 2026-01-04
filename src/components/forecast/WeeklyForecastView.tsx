@@ -64,7 +64,7 @@ export function WeeklyForecastView({ forecast, onDaySelect }: WeeklyForecastView
         </CardHeader>
         <CardBody className="pt-0">
           <div className="grid grid-cols-7 gap-2">
-            {forecast.dailySummaries.map((day, index) => {
+            {(forecast.dailySummaries || []).map((day, index) => {
               const isToday = day.date.getTime() === today.getTime();
               const moonSign = ZODIAC_SIGNS.find(s => s.id === day.moonSign);
               
@@ -104,7 +104,7 @@ export function WeeklyForecastView({ forecast, onDaySelect }: WeeklyForecastView
       </Card>
 
       {/* 关键日期 */}
-      {forecast.keyDates.length > 0 && (
+      {forecast.keyDates && forecast.keyDates.length > 0 && (
         <Card className="glass-card">
           <CardHeader className="pb-2">
             <h3 className="text-lg font-display text-cosmic-nova">本周关键日期</h3>
@@ -146,12 +146,13 @@ export function WeeklyForecastView({ forecast, onDaySelect }: WeeklyForecastView
       )}
 
       {/* 最佳日期建议 */}
+      {forecast.bestDaysFor && (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card className="glass-card">
           <CardBody className="py-3 text-center">
             <div className="text-2xl mb-1">⚡</div>
             <div className="text-xs text-default-400 mb-2">行动日</div>
-            {forecast.bestDaysFor.action.length > 0 ? (
+            {forecast.bestDaysFor.action?.length > 0 ? (
               <div className="space-y-1">
                 {forecast.bestDaysFor.action.slice(0, 2).map((date, i) => (
                   <div key={i} className="text-sm text-default-300">
@@ -169,7 +170,7 @@ export function WeeklyForecastView({ forecast, onDaySelect }: WeeklyForecastView
           <CardBody className="py-3 text-center">
             <div className="text-2xl mb-1">💬</div>
             <div className="text-xs text-default-400 mb-2">沟通日</div>
-            {forecast.bestDaysFor.communication.length > 0 ? (
+            {forecast.bestDaysFor.communication?.length > 0 ? (
               <div className="space-y-1">
                 {forecast.bestDaysFor.communication.slice(0, 2).map((date, i) => (
                   <div key={i} className="text-sm text-default-300">
@@ -187,7 +188,7 @@ export function WeeklyForecastView({ forecast, onDaySelect }: WeeklyForecastView
           <CardBody className="py-3 text-center">
             <div className="text-2xl mb-1">🎨</div>
             <div className="text-xs text-default-400 mb-2">创意日</div>
-            {forecast.bestDaysFor.creativity.length > 0 ? (
+            {forecast.bestDaysFor.creativity?.length > 0 ? (
               <div className="space-y-1">
                 {forecast.bestDaysFor.creativity.slice(0, 2).map((date, i) => (
                   <div key={i} className="text-sm text-default-300">
@@ -205,7 +206,7 @@ export function WeeklyForecastView({ forecast, onDaySelect }: WeeklyForecastView
           <CardBody className="py-3 text-center">
             <div className="text-2xl mb-1">🌙</div>
             <div className="text-xs text-default-400 mb-2">休息日</div>
-            {forecast.bestDaysFor.rest.length > 0 ? (
+            {forecast.bestDaysFor.rest?.length > 0 ? (
               <div className="space-y-1">
                 {forecast.bestDaysFor.rest.slice(0, 2).map((date, i) => (
                   <div key={i} className="text-sm text-default-300">
@@ -219,9 +220,10 @@ export function WeeklyForecastView({ forecast, onDaySelect }: WeeklyForecastView
           </CardBody>
         </Card>
       </div>
+      )}
 
       {/* 本周行运 */}
-      {forecast.weeklyTransits.length > 0 && (
+      {forecast.weeklyTransits && forecast.weeklyTransits.length > 0 && (
         <Card className="glass-card">
           <CardHeader className="pb-2">
             <h3 className="text-lg font-display text-cosmic-nova">本周重要行运</h3>

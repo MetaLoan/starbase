@@ -141,14 +141,17 @@ export default function HomePage() {
   // 转换每周预测数据
   const weeklyForecastForView = useMemo(() => {
     if (!weekly) return null;
+    const weeklyAny = weekly as any;
+    const daysData = (weeklyAny.days || weeklyAny.dailySummaries || []).map((d: any) => ({
+      ...d,
+      date: new Date(d.date),
+    }));
     return {
       ...weekly,
       startDate: new Date(weekly.startDate),
       endDate: new Date(weekly.endDate),
-      days: weekly.days?.map((d: any) => ({
-        ...d,
-        date: new Date(d.date),
-      })) || [],
+      days: daysData,
+      dailySummaries: daysData, // 兼容组件期望的字段名
     };
   }, [weekly]);
 
