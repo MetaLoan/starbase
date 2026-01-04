@@ -77,6 +77,14 @@ export async function POST(request: NextRequest) {
           bestFor: h.bestFor,
           avoidFor: h.avoidFor,
         })) || [],
+        activeAspects: forecast.activeAspects?.map(a => ({
+          transitPlanet: a.transitPlanet,
+          natalPlanet: a.natalPlanet,
+          aspectType: a.aspectType,
+          exactness: a.exactness,
+          applying: a.applying,
+          interpretation: a.interpretation,
+        })) || [],
       });
     } else {
       const forecast = calculateDailyForecast(targetDate, chart);
@@ -107,6 +115,14 @@ export async function POST(request: NextRequest) {
           keywords: h.keywords,
           bestFor: h.bestFor,
           avoidFor: h.avoidFor,
+        })) || [],
+        activeAspects: forecast.activeAspects?.map(a => ({
+          transitPlanet: a.transitPlanet,
+          natalPlanet: a.natalPlanet,
+          aspectType: a.aspectType,
+          exactness: a.exactness,
+          applying: a.applying,
+          interpretation: a.interpretation,
         })) || [],
       });
     }
