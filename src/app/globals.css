@@ -1,0 +1,217 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cosmic-void: #0a0a0f;
+  --cosmic-nebula: #1a1a2e;
+  --cosmic-stellar: #16213e;
+  --cosmic-aurora: #0f3460;
+  --cosmic-nova: #e94560;
+  
+  --zodiac-fire: #ff6b35;
+  --zodiac-earth: #7cb518;
+  --zodiac-air: #00b4d8;
+  --zodiac-water: #7209b7;
+  
+  --planet-sun: #ffd700;
+  --planet-moon: #c0c0c0;
+  --planet-mercury: #b5651d;
+  --planet-venus: #ff69b4;
+  --planet-mars: #dc143c;
+  --planet-jupiter: #daa520;
+  --planet-saturn: #8b7355;
+  --planet-uranus: #40e0d0;
+  --planet-neptune: #4169e1;
+  --planet-pluto: #800080;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: radial-gradient(ellipse at top, var(--cosmic-nebula) 0%, var(--cosmic-void) 50%),
+                radial-gradient(ellipse at bottom, var(--cosmic-stellar) 0%, var(--cosmic-void) 50%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background: var(--cosmic-nova);
+    color: white;
+  }
+}
+
+@layer components {
+  /* 星空背景效果 */
+  .starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    background-image: 
+      radial-gradient(2px 2px at 20px 30px, white, transparent),
+      radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 90px 40px, white, transparent),
+      radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 160px 120px, white, transparent),
+      radial-gradient(2px 2px at 200px 50px, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 250px 160px, white, transparent),
+      radial-gradient(2px 2px at 300px 100px, rgba(255,255,255,0.5), transparent);
+    background-size: 350px 350px;
+    animation: twinkle 8s ease-in-out infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  /* 发光文字效果 */
+  .glow-text {
+    text-shadow: 
+      0 0 10px currentColor,
+      0 0 20px currentColor,
+      0 0 30px currentColor;
+  }
+
+  /* 星盘圆环 */
+  .chart-ring {
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 4px currentColor);
+  }
+
+  /* 行星图标 */
+  .planet-icon {
+    filter: drop-shadow(0 0 3px currentColor);
+    transition: all 0.3s ease;
+  }
+
+  .planet-icon:hover {
+    filter: drop-shadow(0 0 8px currentColor);
+    transform: scale(1.2);
+  }
+
+  /* 玻璃效果卡片 */
+  .glass-card {
+    background: rgba(26, 26, 46, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+      0 4px 30px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  /* 渐变边框 */
+  .gradient-border {
+    position: relative;
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: conic-gradient(
+      from 0deg,
+      var(--zodiac-fire),
+      var(--zodiac-earth),
+      var(--zodiac-air),
+      var(--zodiac-water),
+      var(--zodiac-fire)
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  /* 时间线轨道 */
+  .timeline-track {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--cosmic-stellar) 10%,
+      var(--cosmic-stellar) 90%,
+      transparent 100%
+    );
+  }
+
+  /* 脉动动画 */
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { 
+      opacity: 0.6;
+      box-shadow: 0 0 5px currentColor;
+    }
+    50% { 
+      opacity: 1;
+      box-shadow: 0 0 20px currentColor;
+    }
+  }
+
+  /* 轨道动画 */
+  .orbit-animation {
+    animation: orbit 30s linear infinite;
+    transform-origin: center;
+  }
+
+  @keyframes orbit {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* 数据网格 */
+  .data-grid {
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Cinzel', serif;
+  }
+
+  .font-body {
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* 元素颜色 */
+  .text-fire { color: var(--zodiac-fire); }
+  .text-earth { color: var(--zodiac-earth); }
+  .text-air { color: var(--zodiac-air); }
+  .text-water { color: var(--zodiac-water); }
+
+  .bg-fire { background-color: var(--zodiac-fire); }
+  .bg-earth { background-color: var(--zodiac-earth); }
+  .bg-air { background-color: var(--zodiac-air); }
+  .bg-water { background-color: var(--zodiac-water); }
+
+  /* 行星颜色 */
+  .text-sun { color: var(--planet-sun); }
+  .text-moon { color: var(--planet-moon); }
+  .text-mercury { color: var(--planet-mercury); }
+  .text-venus { color: var(--planet-venus); }
+  .text-mars { color: var(--planet-mars); }
+  .text-jupiter { color: var(--planet-jupiter); }
+  .text-saturn { color: var(--planet-saturn); }
+  .text-uranus { color: var(--planet-uranus); }
+  .text-neptune { color: var(--planet-neptune); }
+  .text-pluto { color: var(--planet-pluto); }
+}
+
